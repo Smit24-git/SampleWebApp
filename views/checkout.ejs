@@ -62,25 +62,28 @@
                 <th id="price-th"> Price </th>
             </tr>
             <%
-            cart.forEach(cartItem => {
+            order.forEach(orderItem => {
                 %>
                 <tr>
-                    <td><%= JSON.parse(cartItem.item).name%></td>
-                    <td class="num-td"><%= parseInt(cartItem.qty)%></td>
-                    <td class="num-td"><%= parseFloat(JSON.parse(cartItem.item).price * cartItem.qty).toFixed(2) %></td>
+                    <td><%= JSON.parse(orderItem.item).name%></td>
+                    <td class="num-td"><%= parseInt(orderItem.qty)%></td>
+                    <td class="num-td"><%= parseFloat(JSON.parse(orderItem.item).price * orderItem.qty).toFixed(2) %></td>
                 </tr>    
             <%
                 });
             %>
         </table>
-        <br/>
-        <center>
-            <form method="POST">
-                <input type="submit" name="checkout" value="Proceed to checkout"/>
-                <input type="submit" name="cart" value="Clear Cart"/>
-                <input type="submit" name="home" value="Go back to home"/>
-            </form>
-        </center>
+            <br/>
+        
+            <center>
+                <form method="POST">
+                    <label>Customer Name: </label><input name="cName" type="text"/>
+                    <label>Delivery: </label><input name="dDate" type="date"/>
+                    <input type="submit" name="complete" value="Complete Order"/>
+                    <input type="submit" name="cancel" value="cancel"/>
+                </form>
+                
+            </center>
     </main>
     <footer>
 

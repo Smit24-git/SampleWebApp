@@ -53,17 +53,58 @@ myApp.post('/',(req,res)=>{
         }
         req.session.cart.push({item: item, qty: qty });
         console.log(req.session.cart);    
+        res.render('index',{items:items});
     }else{
-
+        
+        req.session.buynow = {item: item, qty: qty };
+        res.redirect('buynow');
     }
-    res.render('index',{items:items});
+    
 });
 
 myApp.get('/cart',(req,res)=>{
-    if(req.session.cart)
+    if(req.session.cart )
         res.render('cart',{cart:req.session.cart});
     else
         res.render('cart',{cart:[]});
+});
+myApp.post('/cart',(req,res)=>{
+    if(req.body.checkout){
+        res.redirect('checkout');
+    }else if(req.body.cart){
+        req.session.cart=[];
+        res.redirect('cart');
+    }else{
+        res.redirect('/');
+    }   
+});
+myApp.get('/checkout',(req,res)=>{
+    if(req.session.cart) res.render('checkout',{order: req.session.cart});
+    else res.render('checkout',{order: []});
+});
+myApp.post('/checkout',(req,res)=>{
+    if(req.body.complete){
+        if(!req.session.orders) req.session.orders = [];    
+        req.session.orders.push({cName:req.body.cName,delivery: req.body.dDate, orderItems: req.session.cart});
+        req.session.cart = [];
+    }
+    res.redirect('/');
+    
+});
+
+myApp.get('/buynow',(req,res)=>{
+    res.render('checkout',{order: [req.session.buynow]});
+});
+myApp.post('/buynow',(req,res)=>{
+    if(req.body.complete){
+        if(!req.session.orders) req.session.orders = [];    
+        req.session.orders.push({cName:req.body.cName, orderItems: req.session.buynow});
+    }
+    res.redirect('/');
+    req.session.buynow = null;
+});
+myApp.get('/admin',(req,res)=>{
+    res.render('/admin');
 });
 myApp.listen(process.env.PORT || 5000);
 console.log('Click http://localhost:5000');
