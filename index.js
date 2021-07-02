@@ -58,5 +58,12 @@ myApp.post('/',(req,res)=>{
     }
     res.render('index',{items:items});
 });
+
+myApp.get('/cart',(req,res)=>{
+    if(req.session.cart)
+        res.render('cart',{cart:req.session.cart});
+    else
+        res.render('cart',{cart:[]});
+});
 myApp.listen(process.env.PORT || 5000);
 console.log('Click http://localhost:5000');
