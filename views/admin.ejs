@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .item{
+            background-color: rgba(165, 42, 42, 0.267);
+            display: inline-block;
+            width: 200px;
+            padding: 10px 10px;
+            border-radius: 5px;
+            margin: 10px 20px;
+
+        }
+        b{
+            font-size: 120%;
+            color: orangered;
+        }
+        figure{
+            text-align: center;
+        }
+        header{
+            overflow: auto;
+        }
+        header h1{
+            float: left;
+        }
+        #cart-btn{
+            float: right;
+            margin: 20px 30px;
+            font-size: 120%;
+        }
+        form{
+            display: inline-block;
+        }
+        #cart-form{
+            float: right;
+        }
+        table{
+            width: 60%;
+            margin: auto;
+        }
+        table th#qty-th,table th#price-th{
+            width: 100px;
+        }
+        .num-td{
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> DASHBOARD</h1>
+    </header>
+    <main>
+        
+        
+        <center>
+            <form method="POST">
+                <label>Delivery Date: </label><input name="dDate" type="date"/>
+                <input type="submit" name="complete" value="Submit"/>
+            </form>
+        </center>
+        <br/>
+        <%
+        if(typeof(productCounts) != 'undefined'){
+        %>
+        
+            <br/><br/>
+            <table border="1" style="text-align: center;">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Qty</th>
+                </tr>
+                <%
+                    productCounts.forEach(pc => { %>
+                        <tr>
+                            <td><%= pc.name%></td>
+                            <td><%= pc.qty%></td>
+                        </tr>
+                        <%
+                    });
+                %>
+            </table>
+            
+        <br/><br/><hr/><br/><br/>
+        <%
+        }
+        %>
+        <table border="1">
+            <tr>
+                <th>Customer Name</th>
+                <th>Delivery</th>
+                <th>Ordered Products</th>
+            </tr>
+        
+        <%
+            orders.forEach(order => {
+                %>
+                    <tr>
+                        <td><%= order.cName %></td>
+                        <td><%= order.delivery%></td>
+                        <td><% order.orderItems.forEach(orderItem => { %>
+                            <%= JSON.parse(orderItem.item).name +" "+ orderItem.qty %> <br/>
+                        <% }); %></td>
+                        
+                    </tr>
+                <%
+            });
+        %>
+        </table>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>

@@ -98,13 +98,42 @@ myApp.get('/buynow',(req,res)=>{
 myApp.post('/buynow',(req,res)=>{
     if(req.body.complete){
         if(!req.session.orders) req.session.orders = [];    
-        req.session.orders.push({cName:req.body.cName, orderItems: req.session.buynow});
+        req.session.orders.push({cName:req.body.cName,delivery: req.body.dDate, orderItems: [req.session.buynow] });
     }
     res.redirect('/');
     req.session.buynow = null;
 });
 myApp.get('/admin',(req,res)=>{
-    res.render('/admin');
+    if(!req.session.orders) req.session.orders=[];
+    res.render('admin',{orders: req.session.orders });
 });
+myApp.post('/admin',(req,res)=>{
+    var date = req.body.dDate;
+    var productCounts = Array();
+    for(var item of items){
+        productCounts.push({name: item.name, qty: 0});
+    }
+    var orders = req.session.orders;
+    if (orders) orders = orders.filter(order => order.delivery == date);
+    if(orders){
+        orders.forEach(order => {
+            var items = order.orderItems;
+            
+            items.forEach(item => {
+                var qty = item.qty
+                var item = JSON.parse(item.item);
+                for(var productCount of productCounts){
+                    if(productCount.name ==item.name) {
+                        productCount.qty += parseInt(qty); break;
+                    }
+                }
+            });
+        });
+    }
+    productCounts = productCounts.filter(o=>o.qty>0);
+    console.log(productCounts);
+    res.render('admin',{orders: req.session.orders, productCounts:productCounts });
+});
+
 myApp.listen(process.env.PORT || 5000);
 console.log('Click http://localhost:5000');
