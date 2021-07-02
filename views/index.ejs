@@ -32,6 +32,9 @@
             margin: 20px 30px;
             font-size: 120%;
         }
+        form{
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -44,21 +47,24 @@
         <%
             items.forEach(item => {
                 %>
-                <section id="<%= item.id %>" class="item">
-                    <input type="hidden" value="<%= item.id%>"/>
-                    <header><h3><%= item.name %></h3></header>
-                    <figure>
-                        <img src="media/<%= item.img %>" width="100px" height="120px"/>
-                    </figure>
-                    <b>$ <%= item.price %></b><br/><br/>
-                    <label>Quantity</label>
-                    <input type="number" value="1" min="1" id="<%= item.id %>-qty"/> <br/><br/>
-                    <input type="submit" value="Add to cart"/>
-                    <input type="submit" value="Buy now"/>
-                </section>        
+                <form method="POST">
+                    <section id="<%= item.id %>" class="item">
+                        <input type="hidden" name="item" value="<%= JSON.stringify(item)%>"/>
+                        <header><h3><%= item.name %></h3></header>
+                        <figure>
+                            <img src="media/<%= item.img %>" width="100px" height="120px"/>
+                        </figure>
+                        <b>$ <%= item.price %></b><br/><br/>
+                        <label>Quantity</label>
+                        <input type="number" value="1" min="1" name="qty"/> <br/><br/>
+                        <input type="submit" name="cart" value="Add to cart"/>
+                        <input type="submit" name="buy" value="Buy now"/>
+                    </section>     
+                </form>   
             <%
             });
         %>
+        
     </main>
     <footer>
 

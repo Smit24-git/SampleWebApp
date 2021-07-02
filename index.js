@@ -30,18 +30,33 @@ myApp.use(session({
 var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
+var items = [];
+items = items.concat(
+    [
+        { id: "apple", name:"Apple", img: "apple.png", price:"4.99"},
+        { id: "banana", name:"Banana", img: "banana.png", price:"5.99"},
+        { id: "watermelon_tray", name:"Watermelon Tray", img: "watermelon_tray.png", price:"6.99"},
+        { id: "soup_mix", name:"Soup Mix", img: "soup_mix.png", price:"5.99"},
+        { id: "leeks", name:"Leeks", img: "leeks.png", price:"3.99"}
+    ]);
+
 myApp.get('/', (req, res) => {
-    var items = [];
-    items = items.concat(
-        [
-            { id: "apple", name:"Apple", img: "apple.png", price:"4.99"},
-            { id: "banana", name:"Banana", img: "banana.png", price:"5.99"},
-            { id: "watermelon_tray", name:"Watermelon Tray", img: "watermelon_tray.png", price:"6.99"},
-            { id: "soup_mix", name:"Soup Mix", img: "soup_mix.png", price:"5.99"},
-            { id: "leeks", name:"Leeks", img: "leeks.png", price:"3.99"}
-        ]);
+
     res.render('index',{items:items});
 });
+myApp.post('/',(req,res)=>{
+    item = req.body.item;
+    qty = req.body.qty;
+    if(req.body.cart){
+        if(!req.session.cart){
+            req.session.cart = [];
+        }
+        req.session.cart.push({item: item, qty: qty });
+        console.log(req.session.cart);    
+    }else{
 
+    }
+    res.render('index',{items:items});
+});
 myApp.listen(process.env.PORT || 5000);
 console.log('Click http://localhost:5000');
