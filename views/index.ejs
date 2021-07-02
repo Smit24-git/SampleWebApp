@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .item{
+            background-color: rgba(165, 42, 42, 0.267);
+            display: inline-block;
+            width: 200px;
+            padding: 10px 10px;
+            border-radius: 5px;
+            margin: 10px 20px;
+
+        }
+        b{
+            font-size: 120%;
+            color: orangered;
+        }
+        figure{
+            text-align: center;
+        }
+        header{
+            overflow: auto;
+        }
+        header h1{
+            float: left;
+        }
+        #cart-btn{
+            float: right;
+            margin: 20px 30px;
+            font-size: 120%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> AUSSIE FOOD MART</h1>
+        <input type="submit" id="cart-btn" value="Cart"/>
+    </header>
+    <main>
+        
+        <%
+            items.forEach(item => {
+                %>
+                <section id="<%= item.id %>" class="item">
+                    <input type="hidden" value="<%= item.id%>"/>
+                    <header><h3><%= item.name %></h3></header>
+                    <figure>
+                        <img src="media/<%= item.img %>" width="100px" height="120px"/>
+                    </figure>
+                    <b>$ <%= item.price %></b><br/><br/>
+                    <label>Quantity</label>
+                    <input type="number" value="1" min="1" id="<%= item.id %>-qty"/> <br/><br/>
+                    <input type="submit" value="Add to cart"/>
+                    <input type="submit" value="Buy now"/>
+                </section>        
+            <%
+            });
+        %>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>
